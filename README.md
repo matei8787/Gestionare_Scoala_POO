@@ -48,3 +48,7 @@ Catalogul este relatia Profesor - Situatie - Elev
 Notați aici ce alte resurse ați folosit / găsit utile pe parcursul dezvoltării proiectului.
 
 https://www.edrawmax.com/templates/1024810/ (pentru a vedea ce face efectiv personalul administrativ)
+Sfantul Google Search:
+- Pentru a vedea cum se pune o imagine intr-un markdown
+
+![](Diagrama.png)
