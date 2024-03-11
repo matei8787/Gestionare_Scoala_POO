@@ -42,6 +42,7 @@ Catalogul este relatia Profesor - Situatie - Elev
 
 ### Alte detalii
 - Clasa este intr-o sala de curs
+- Profesorii si Elevii au un orar
 
 ## Referințe
 
