@@ -323,7 +323,7 @@ public:
             }
         }
     }
-    void inregistreaza_copil(Elev e, string id_clasa)
+    void inmatriculeaza_copil(Elev e, string id_clasa)
     {
         scoala.get_clase()[id_clasa].adauga_elev(e);
     }
@@ -331,11 +331,11 @@ public:
     {
         scoala.get_clase()[id_clasa].sterge_elev(e);
     }
-    void inregistreaza_copil(Elev e, Clasa& c)
+    void inmatriculeaza_copil(Elev e, Clasa& c)
     {
         c.adauga_elev(e);
     }
-    void exmatriculeaza_copil(Elev e, Clasa& c)
+    void exmatriculeaza_elev(Elev e, Clasa& c)
     {
         for ( int i = 0 ; i < c.get_elevi().size() ; i++ )
         {
@@ -364,5 +364,10 @@ public:
     void inregistreaza_prof_la_clasa(Profesor p, Clasa c)
     {
         p.adauga_clasa(c);
+    }
+    void muta_elev(Elev e, Clasa& c1, Clasa& c2)
+    {
+        c1.sterge_elev(e);
+        c2.adauga_elev(e);
     }
 };

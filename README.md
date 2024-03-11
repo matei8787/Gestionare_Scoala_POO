@@ -4,45 +4,29 @@ Gestionarea unei scoli (institutie de invatamant)
 
 ## Continut
 
-Gestionarea unei scoli are in vedere oamenii din scoala, cladirea si curicula.
+Gestionarea unei scoli are in vedere gestionarea situatiei elevilor de catre profesor si a profesorilor de catre personalul administrativ.
 
-Oamenii din scoala sunt:
-- Profesori (Personal didactic)
-- Personal Administrativ
-- Elevi
-- Personal auxiliar* (nu am inca idee ce ar face)
-
-Cladirea este formata din mai multe camere care pot fi:
-- Sali de curs
-- Cancelarie
-- Birou Director/Director Adjunct
-- Biblioteca
-- Cabinet medical
-- Putem considera si curtea scolii ca o camera
-
-Curicula se refera la toate lucrurile "abstracte", adica:
-- Clasa fiecarui elev
-- Disciplinele scolii
-- Catalog
-Catalogul este relatia Profesor - Situatie - Elev
+In fisierul "util.hpp" avem niste structuri ajutatoare pentru Discipline, Datele unui om si situatia unui elev.
+In fisierul "oameni.hpp" avem cele 5 clase principale:
+- Elev
+- Clasa
+- Profesor
+- Scoala
+- Admin
 
 ## Functionalitate
 
-### Personalul didactic:
-- Preda la o Clasa
-- Este specializat in o Disciplina
-- Gestioneaza Situatia unu Elev (functie cu parametru elev)
+### Profesorul:
+- Preda la mai multe Clase
+- Adauga si sterge notele elevilor
+- Adauga si motiveaza absentele elevilor
 
-### Personalul administrativ:
-- Gesioneaza Personalul didactic, Disciplinele predate si elevii
-
-### Elevul
-- Are o situatie
-- Este la o Clasa
-
-### Alte detalii
-- Clasa este intr-o sala de curs
-- Profesorii si Elevii au un orar
+### Personalul Administrativ:
+- Este angajat la o scoala
+- Angajeaza si concediaza profesori
+- Inmatriculeaza, muta sau exmatriculeaza elevi dintr-o clasa
+- Poate exmatricula un elev dintr-o scoala
+- Stabileste profesorii de la o clasa
 
 ## Referințe
 
@@ -51,5 +35,8 @@ Notați aici ce alte resurse ați folosit / găsit utile pe parcursul dezvoltăr
 https://www.edrawmax.com/templates/1024810/ (pentru a vedea ce face efectiv personalul administrativ)
 Sfantul Google Search:
 - Pentru a vedea cum se pune o imagine intr-un markdown
+
+Geeksforgeeks pentru chestii basic de sintaxa
+[cppreference enum](https://en.cppreference.com/w/cpp/language/enum)
 
 ![](Diagrama.png)
