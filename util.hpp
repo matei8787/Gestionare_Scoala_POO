@@ -41,7 +41,7 @@ struct Data
 };
 ostream& operator << (ostream& out, const Data &d)
 {
-    out<<d.zi<<" "<<d.luna<<" "<<d.an;
+    out<<d.zi<<"-"<<d.luna<<"-"<<d.an;
     return out;
 }
 struct Adrese_de_Contact
@@ -154,4 +154,24 @@ public:
     {
         return 1.0*get_suma_note()/get_cate_note();
     }
+    friend ostream& operator<< (ostream& out, const Situatie& s);
 };
+ostream& operator<< (ostream& out, const Situatie& s)
+{
+    out<<s.disciplina<<"\nNote: ";
+    for ( int i = 1 ; i <= 10 ; i++ )
+    {
+        int aux = s.note[i];
+        while ( aux )
+        {
+            cout<<i<<", ";
+            aux--;
+        }
+    }
+    cout<<"\nAbsente: ";
+    for ( Data i : s.absente )
+    {
+        cout<<i<<'\n';
+    }
+    cout<<"\n\n";
+}

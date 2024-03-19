@@ -2,7 +2,7 @@
 
 #include "util.hpp"
 
-class Elev 
+class Elev
 {
 private:
     vector<Situatie> situatii;
@@ -24,17 +24,17 @@ public:
     }
     Date_om get_date()
     {
-        return date_personale;
+        return this -> date_personale;
     }
-    vector<Situatie> get_situatii()
+    vector<Situatie>& get_situatii()
     {
-        return situatii;
+        return this -> situatii;
     }
-    Situatie get_situatie(int i)
+    Situatie& get_situatie(int i)
     {
         return situatii[i];
     }
-    Situatie get_situatie(DISCIPLINE_POSIBILE d)
+    Situatie& get_situatie(DISCIPLINE_POSIBILE d)
     {
         for ( int i = 0 ; i < situatii.size() ; i++ )
         {
@@ -52,7 +52,16 @@ public:
     {
         return (this -> date_personale == e.date_personale);
     }
+    friend ostream& operator<< (ostream& out, const Elev& e);
 };
+ostream& operator<< (ostream& out, const Elev& e)
+{
+    out<<e.date_personale.nume<<" "<<e.date_personale.prenume<<": \n";
+    for (int i = 0 ; i < e.situatii.size() ; i++ )
+    {
+        cout<<e.situatii[i];
+    }
+}
 
 class Clasa
 {
@@ -69,11 +78,6 @@ public:
     {
         nr_sala = sala;
         nr_clasa = -1;
-    }
-    Clasa(int clasa)
-    {
-        nr_sala = 0;
-        nr_clasa = clasa;
     }
     Clasa(int sala, int clasa)
     {
@@ -94,7 +98,7 @@ public:
     {
         return nr_clasa;
     }
-    vector<Elev> get_elevi()
+    vector<Elev>& get_elevi()
     {
         return elevi;
     }
@@ -129,7 +133,7 @@ public:
     }
 };
 
-class Profesor 
+class Profesor
 {
 private:
     DISCIPLINE_POSIBILE disciplina;
@@ -154,9 +158,20 @@ public:
     {
         return date_personale;
     }
-    vector<Clasa> get_clase()
+    vector<Clasa>& get_clase()
     {
         return clase;
+    }
+    Clasa& get_clasa(Elev e)
+    {
+        for ( Clasa c : clase )
+        {
+            for ( Elev el : c.get_elevi() )
+            {
+                if ( e == el )
+                    return c;
+            }
+        }
     }
     void adauga_clasa(const Clasa& c)
     {
@@ -201,7 +216,7 @@ private:
 public:
     Scoala()
     {
-        
+
     }
     Scoala(string nume)
     {
@@ -221,11 +236,21 @@ public:
         profesori_angajati = profesori;
         this -> clase = clase;
     }
-    vector<Profesor> get_profesori()
+    vector<Profesor>& get_profesori()
     {
         return profesori_angajati;
     }
-    map<string, Clasa> get_clase()
+    Profesor& get_profesor(string nume, string prenume, DISCIPLINE_POSIBILE d)
+    {
+        for (Profesor p : profesori_angajati )
+        {
+            if ( p.get_date().nume == nume && p.get_date().prenume == prenume && p.get_disciplina() == d )
+            {
+                return p;
+            }
+        }
+    }
+    map<string, Clasa>& get_clase()
     {
         return clase;
     }
@@ -237,6 +262,17 @@ public:
                 return i -> first;
         }
     }
+    Clasa& get_clasa(Elev e)
+    {
+        for ( auto i : clase )
+        {
+            for ( Elev el : i.second.get_elevi() )
+            {
+                if ( e == el )
+                    return i.second;
+            }
+        }
+    }
 };
 
 class Admin
@@ -245,7 +281,7 @@ private:
     Date_om date_personale;
     Scoala scoala;
 public:
-    Admin() 
+    Admin()
     {
         date_personale = Date_om();
     }
@@ -256,13 +292,13 @@ public:
     Admin(Date_om om, Scoala s)
     {
         date_personale = om;
-        scoala = s;
+
     }
     Date_om get_date()
     {
         return date_personale;
     }
-    Scoala get_scoala()
+    Scoala& get_scoala()
     {
         return scoala;
     }

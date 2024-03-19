@@ -1,9 +1,5 @@
-#include "Oameni.hpp"
-void pre()
-{
-    
-}
+#include "teste.hpp"
 int main()
 {
-    
+    testeaza();
 }
