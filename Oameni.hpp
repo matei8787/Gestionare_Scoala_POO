@@ -10,7 +10,7 @@ private:
 public:
     Elev()
     {
-        situatii = vector<Situatie>(DIMENSIUNE, Situatie());
+        situatii.resize(DIMENSIUNE);
         for ( int i = 0 ; i < discipline.size() ; i++ )
         {
             situatii[i].set_disciplina(discipline[i]);
@@ -19,10 +19,14 @@ public:
     }
     Elev(Date_om date)
     {
-        Elev();
         date_personale = date;
+        situatii.resize(DIMENSIUNE);
+        for ( int i = 0 ; i < discipline.size() ; i++ )
+        {
+            situatii[i].set_disciplina(discipline[i]);
+        }
     }
-    Date_om get_date()
+    Date_om& get_date()
     {
         return this -> date_personale;
     }
@@ -38,7 +42,7 @@ public:
     {
         for ( int i = 0 ; i < situatii.size() ; i++ )
         {
-            if ( situatii[i].get_disciplina() == d )
+            if ( situatii[i]. get_disciplina() == d )
             {
                 return situatii[i];
             }
@@ -131,8 +135,12 @@ public:
     {
         return (this -> nr_clasa == c.nr_clasa && this -> nr_sala == c.nr_sala);
     }
+    bool operator!= (const Clasa& c) const
+    {
+        return !(this -> nr_clasa == c.nr_clasa && this -> nr_sala == c.nr_sala);
+    }
 };
-
+Clasa NMK = Clasa(-1, -1);
 class Profesor
 {
 private:
@@ -154,7 +162,7 @@ public:
     {
         return disciplina;
     }
-    Date_om get_date()
+    Date_om& get_date()
     {
         return date_personale;
     }
@@ -164,14 +172,15 @@ public:
     }
     Clasa& get_clasa(Elev e)
     {
-        for ( Clasa c : clase )
+        for ( Clasa& c : clase )
         {
-            for ( Elev el : c.get_elevi() )
+            for ( Elev& el : c.get_elevi() )
             {
                 if ( e == el )
                     return c;
             }
         }
+        return NMK;
     }
     void adauga_clasa(const Clasa& c)
     {
@@ -187,7 +196,10 @@ public:
     }
     void adauga_nota(Elev e, int nr)
     {
-        e.get_situatie(disciplina).adauga_nota(nr);
+        if ( get_clasa(e) != NMK )
+            e.get_situatie(disciplina).adauga_nota(nr);
+        else
+            cout<<"N-am elevul la clasa\n";
     }
     void adauga_absenta(Elev e, Data d)
     {
@@ -240,13 +252,14 @@ public:
     {
         return profesori_angajati;
     }
-    Profesor& get_profesor(string nume, string prenume, DISCIPLINE_POSIBILE d)
+    Profesor* get_profesor(string nume, string prenume, DISCIPLINE_POSIBILE d)
     {
         for (Profesor p : profesori_angajati )
         {
             if ( p.get_date().nume == nume && p.get_date().prenume == prenume && p.get_disciplina() == d )
             {
-                return p;
+                Profesor* profl = &p;
+                return profl;
             }
         }
     }
@@ -264,9 +277,9 @@ public:
     }
     Clasa& get_clasa(Elev e)
     {
-        for ( auto i : clase )
+        for ( auto& i : clase )
         {
-            for ( Elev el : i.second.get_elevi() )
+            for ( Elev& el : i.second.get_elevi() )
             {
                 if ( e == el )
                     return i.second;
@@ -292,15 +305,15 @@ public:
     Admin(Date_om om, Scoala s)
     {
         date_personale = om;
-
+        scoala = s;
     }
-    Date_om get_date()
+    Date_om& get_date()
     {
-        return date_personale;
+        return this -> date_personale;
     }
     Scoala& get_scoala()
     {
-        return scoala;
+        return this -> scoala;
     }
     void set_om(Date_om om)
     {
@@ -316,7 +329,7 @@ public:
     }
     void concediaza_profesor(Date_om p)
     {
-        vector<Profesor> profesori = scoala.get_profesori();
+        vector<Profesor> &profesori = scoala.get_profesori();
         for ( int i = 0 ; i < profesori.size() ; i++ )
         {
             if ( profesori[i].get_date() == p )
@@ -328,7 +341,7 @@ public:
     }
     void concediaza_profesor(Profesor p)
     {
-        vector<Profesor> profesori = scoala.get_profesori();
+        vector<Profesor>& profesori = scoala.get_profesori();
         for ( int i = 0 ; i < profesori.size() ; i++ )
         {
             if ( profesori[i] == p )
@@ -397,9 +410,10 @@ public:
                 }
         }
     }
-    void inregistreaza_prof_la_clasa(Profesor p, Clasa c)
+    void inregistreaza_prof_la_clasa(Profesor* p, const Clasa& c)
     {
-        p.adauga_clasa(c);
+        vector<Clasa>& aux = p ->get_clase();
+        aux.push_back(c);
     }
     void muta_elev(Elev e, Clasa& c1, Clasa& c2)
     {

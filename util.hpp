@@ -51,19 +51,26 @@ struct Adrese_de_Contact
     {
         locuinta = email = telefon = "";
     }
-    static Adrese_de_Contact make_adresa(string loc, string mail, string tel)
+    Adrese_de_Contact& operator=(Adrese_de_Contact ad)
     {
-            Adrese_de_Contact a;
-            a.email = mail;
-            a.locuinta = loc;
-            a.telefon = tel;
-            return a;
+        locuinta = ad.locuinta;
+        email = ad.email;
+        telefon = ad.telefon;
+        return *this;
     }
     bool operator== (const Adrese_de_Contact& ad) const
     {
         return (this -> locuinta == ad.locuinta && this -> email == ad.email && this -> telefon == ad.telefon);
     }
 };
+Adrese_de_Contact make_adresa(string loc, string mail, string tel)
+{
+        Adrese_de_Contact a;
+        a.email = mail;
+        a.locuinta = loc;
+        a.telefon = tel;
+        return a;
+}
 struct Date_om
 {
     string nume, prenume, cnp;
@@ -73,25 +80,34 @@ struct Date_om
         nume = prenume = cnp = "";
         contact = Adrese_de_Contact();
     }
+    Date_om& operator=(Date_om dp)
+    {
+        nume = dp.nume;
+        prenume = dp.prenume;
+        cnp = dp.cnp;
+        contact = dp.contact;
+        return *this;
+    }
     Data get_data_nastere()
     {
         Data ans = {(cnp[5]-'0')*10+cnp[6]-'0',(cnp[3]-'0')*10+cnp[4]-'0',(cnp[1]-'0')*10+cnp[2]-'0'};
         return ans;
     }
-    static Date_om make_om(string nume, string prenume, string cnp, Adrese_de_Contact ad)
-    {
-        Date_om d;
-        d.nume = nume;
-        d.prenume = prenume;
-        d.cnp = cnp;
-        d.contact = ad;
-        return d;
-    } 
+
     bool operator==(const Date_om& om) const
     {
         return (this -> nume == om.nume && this -> prenume == om.prenume && this -> cnp == om.cnp && this -> contact == om.contact);
     }
 };
+Date_om make_om(string nume, string prenume, string cnp, Adrese_de_Contact ad)
+{
+    Date_om d;
+    d.nume = nume;
+    d.prenume = prenume;
+    d.cnp = cnp;
+    d.contact = ad;
+    return d;
+}
 class Situatie
 {
 private:
