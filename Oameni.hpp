@@ -65,6 +65,7 @@ ostream& operator<< (ostream& out, const Elev& e)
     {
         cout<<e.situatii[i];
     }
+    return out;
 }
 
 class Clasa
@@ -170,6 +171,10 @@ public:
     {
         return clase;
     }
+    vector<Clasa> get_clase_simplu()
+    {
+        return clase;
+    }
     Clasa& get_clasa(Elev e)
     {
         for ( Clasa& c : clase )
@@ -194,22 +199,22 @@ public:
     {
         date_personale = d;
     }
-    void adauga_nota(Elev e, int nr)
+    void adauga_nota(Elev& e, int nr)
     {
         if ( get_clasa(e) != NMK )
             e.get_situatie(disciplina).adauga_nota(nr);
         else
             cout<<"N-am elevul la clasa\n";
     }
-    void adauga_absenta(Elev e, Data d)
+    void adauga_absenta(Elev& e, Data d)
     {
         e.get_situatie(disciplina).adauga_absenta(d);
     }
-    void sterge_nota(Elev e, int nr)
+    void sterge_nota(Elev& e, int nr)
     {
         e.get_situatie(disciplina).sterge_nota(nr);
     }
-    void motiveaza_absenta(Elev e, Data d)
+    void motiveaza_absenta(Elev& e, Data d)
     {
         e.get_situatie(disciplina).motiveaza_absenta(d);
     }
@@ -252,18 +257,21 @@ public:
     {
         return profesori_angajati;
     }
-    Profesor* get_profesor(string nume, string prenume, DISCIPLINE_POSIBILE d)
+    Profesor& get_profesor(string nume, string prenume, DISCIPLINE_POSIBILE d)
     {
-        for (Profesor p : profesori_angajati )
+        for (int i = 0 ; i < profesori_angajati.size() ; i++ )
         {
-            if ( p.get_date().nume == nume && p.get_date().prenume == prenume && p.get_disciplina() == d )
+            if ( profesori_angajati[i].get_date().nume == nume && profesori_angajati[i].get_date().prenume == prenume && profesori_angajati[i].get_disciplina() == d )
             {
-                Profesor* profl = &p;
-                return profl;
+                return profesori_angajati[i];
             }
         }
     }
     map<string, Clasa>& get_clase()
+    {
+        return clase;
+    }
+    map<string, Clasa> get_clase_simplu()
     {
         return clase;
     }
@@ -287,7 +295,6 @@ public:
         }
     }
 };
-
 class Admin
 {
 private:
@@ -397,10 +404,10 @@ public:
     }
     void exmatriculeaza_elev(Elev e)
     {
-        map<string, Clasa> clase = scoala.get_clase();
+        map<string, Clasa>& clase = scoala.get_clase();
         for ( auto i = clase.begin() ; i != clase.end() ; i++ )
         {
-                vector<Elev> el = i -> second.get_elevi();
+                vector<Elev>& el = i -> second.get_elevi();
                 for ( int j = 0 ; j < el.size() ; j++ )
                 {
                     if ( e == el[j] )
@@ -410,12 +417,11 @@ public:
                 }
         }
     }
-    void inregistreaza_prof_la_clasa(Profesor* p, const Clasa& c)
+    void inregistreaza_prof_la_clasa(Profesor& p, const Clasa& c)
     {
-        vector<Clasa>& aux = p ->get_clase();
-        aux.push_back(c);
+        p.adauga_clasa(c);
     }
-    void muta_elev(Elev e, Clasa& c1, Clasa& c2)
+    void muta_elev(Elev& e, Clasa& c1, Clasa& c2)
     {
         c1.sterge_elev(e);
         c2.adauga_elev(e);

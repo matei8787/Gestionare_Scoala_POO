@@ -98,6 +98,7 @@ struct Date_om
     {
         return (this -> nume == om.nume && this -> prenume == om.prenume && this -> cnp == om.cnp && this -> contact == om.contact);
     }
+    friend ostream& operator << (ostream& out, const Date_om &d);
 };
 Date_om make_om(string nume, string prenume, string cnp, Adrese_de_Contact ad)
 {
@@ -107,6 +108,11 @@ Date_om make_om(string nume, string prenume, string cnp, Adrese_de_Contact ad)
     d.cnp = cnp;
     d.contact = ad;
     return d;
+}
+ostream& operator << (ostream& out, const Date_om &d)
+{
+    out<<d.prenume<<" "<<d.nume;
+    return out;
 }
 class Situatie
 {
@@ -174,20 +180,21 @@ public:
 };
 ostream& operator<< (ostream& out, const Situatie& s)
 {
-    out<<s.disciplina<<"\nNote: ";
+    out<<nume_disciplina[s.disciplina]<<"\nNote: ";
     for ( int i = 1 ; i <= 10 ; i++ )
     {
         int aux = s.note[i];
         while ( aux )
         {
-            cout<<i<<", ";
+            out<<i<<", ";
             aux--;
         }
     }
-    cout<<"\nAbsente: ";
+    out<<"\nAbsente: ";
     for ( Data i : s.absente )
     {
-        cout<<i<<'\n';
+        out<<i<<'\n';
     }
-    cout<<"\n\n";
+    out<<"\n\n";
+    return out;
 }

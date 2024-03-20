@@ -44,6 +44,15 @@ void afiseaza_copii(Clasa c)
         cout<<e.get_date().nume<<" "<<e.get_date().prenume<<" invata la clasa "<<c.get_clasa()<<'\n';
     }
 }
+void afiseaza_copii(Scoala s)
+{
+    for ( pair<string, Clasa> c : s.get_clase() )
+    {
+        cout<<c.first<<" : ";
+        afiseaza_copii(c.second);
+        cout<<'\n';
+    }
+}
 void testeaza()
 {
     Scoala s("Liceul din mijloc");
@@ -75,51 +84,30 @@ void testeaza()
     }
     a.inmatriculeaza_copil(marcel, "VII B");
     a.inmatriculeaza_copil(mirel, "VII B");
-    Clasa cla = a.get_scoala().get_clase()["VII B"];
-    for ( auto cl : a.get_scoala().get_clase() )
-    {
-        afiseaza_copii(cl.second);
-    }
+    Clasa& cla = a.get_scoala().get_clase()["VII B"];
     for ( int i = 0 ; i < discipline.size() ; i++ )
     {
-        Profesor* p = a.get_scoala().get_profesor("Profu de", nume_disciplina[discipline[i]], discipline[i]);
+        Profesor &p = a.get_scoala().get_profesor("Profu de", nume_disciplina[discipline[i]], discipline[i]);
         a.inregistreaza_prof_la_clasa(p, cla);
-        for ( Clasa c : p -> get_clase() )
-        {
-            cout<<c.get_sala()<<'\n';
-        }
-        for ( Profesor pr : a.get_scoala().get_profesori() )
-        {
-            if ( pr.get_disciplina() == p -> get_disciplina() )
-            {
-                if ( &pr == p )
-                {
-                    cout<<"E bine";
-                }
-                else
-                {
-                    cout<<"E prost";
-                }
-            }
-        }
         if ( discipline[i] == SPORT )
         {
-            p->adauga_nota(marcel, 5);
-            p->adauga_nota(mirel, 10);
+            p.adauga_nota(marcel, 5);
+            p.adauga_nota(mirel, 10);
         }
         else
         {
-            p->adauga_nota(marcel, 10);
-            p->adauga_nota(mirel, 5);
+            p.adauga_nota(marcel, 10);
+            p.adauga_nota(mirel, 5);
         }
     }
-    afiseaza_profi(a.get_scoala());
-    /*a.muta_elev(mirel, cla, a.get_scoala().get_clase()["VII C"]);
+    afiseaza_copii(a.get_scoala());
+    a.muta_elev(mirel, cla, a.get_scoala().get_clase()["VII C"]);
     Data d1 = {1, 1, 2024}, d2 = {2, 1, 2024}, d3 = {4, 1, 2024};
     a.get_scoala().get_profesor("Profu de", "Geografie", DISCIPLINE_POSIBILE::GEOGRAFIE).adauga_absenta(mirel, d1);
     a.get_scoala().get_profesor("Profu de", "Geografie", DISCIPLINE_POSIBILE::GEOGRAFIE).adauga_absenta(mirel, d2);
     a.get_scoala().get_profesor("Profu de", "Geografie", DISCIPLINE_POSIBILE::GEOGRAFIE).adauga_absenta(mirel, d3);
-    /*for ( Situatie sit : mirel.get_situatii() )
+    cout<<"Situatia lui "<<mirel.get_date()<<'\n';
+    for ( Situatie sit : mirel.get_situatii() )
     {
         cout<<sit;
     }
@@ -128,17 +116,15 @@ void testeaza()
     a.get_scoala().get_profesor("Profu de", "Geografie", DISCIPLINE_POSIBILE::GEOGRAFIE).motiveaza_absenta(mirel, d2);
     a.get_scoala().get_profesor("Profu de", "Geografie", DISCIPLINE_POSIBILE::GEOGRAFIE).motiveaza_absenta(mirel, d1);
     ///puterea spagii done!
-    cout<<"AM DAT SPAGA SI NIMENI NU MA POATE PRINDE";
+    cout<<"Situatia lui "<<mirel.get_date()<<'\n';
+    for ( Situatie sit : mirel.get_situatii() )
+    {
+        cout<<sit;
+    }
+    afiseaza_copii(a.get_scoala());
+    cout<<"AM DAT SPAGA SI NIMENI NU MA POATE PRINDE\n";
     a.exmatriculeaza_elev(mirel);
     cout<<"AM FOST EXMATRICULAT DIN SCOALA OF, NU FACETI CA MINE COPII\n";
-    auto clase = a.get_scoala().get_clase();
-    for ( auto i = clase.begin() ; i != clase.end() ; i++ )
-    {
-        cout<<"Clasa "<<i -> first<<":\n";
-        for ( Elev e : i -> second.get_elevi() )
-        {
-            cout<<e;
-        }
-    }*/
+    afiseaza_copii(a.get_scoala());
 }
 
